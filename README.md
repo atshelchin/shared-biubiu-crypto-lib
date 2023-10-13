@@ -1,3 +1,1 @@
-# test-purejs-lib
-
-...
+# shared-biubiu-crypto-utils
