@@ -1,0 +1,17 @@
+{
+  "all": true,
+  "exclude": [
+    "coverage/**",
+    "packages/*/test{,s}/**",
+    "**/*.d.ts",
+    "test{,s}/**",
+    "**/tests/**",
+    "**/{ava,babel,nyc}.config.{js,cjs,mjs}",
+    "**/jest.config.{js,cjs,mjs,ts}",
+    "**/{karma,rollup,webpack}.config.js",
+    "**/.{eslint,mocha}rc.{js,cjs}",
+    "**/index.{js,ts}",
+    "**/lib/Interface.{js,ts}"
+  ],
+  "reporter": ["text", "html", "lcov"]
+}
