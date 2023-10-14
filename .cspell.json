@@ -36,7 +36,9 @@
     "Xpub",
     "Aptos",
     "Solana",
-    "biubiu"
+    "biubiu",
+    "uncompress",
+    "keccak"
   ],
   "flagWords": [],
   "ignorePaths": [

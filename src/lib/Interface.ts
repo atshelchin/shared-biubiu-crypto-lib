@@ -7,3 +7,6 @@ export type Signature = {
   s: bigint;
   recovery: number;
 };
+
+export type ETHAddress = `0x${string}`;
+export type TronAddress = string;

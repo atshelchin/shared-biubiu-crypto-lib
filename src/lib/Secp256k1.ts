@@ -81,4 +81,14 @@ export default class Secp256k1 extends Cryptolib {
     const deriveNode = hdkey.derive(path);
     return deriveNode.publicKey;
   }
+
+  // uncompress pubkey
+  uncompressPubkey(pubkey: PubKey): PubKey {
+    return secp256k1.ProjectivePoint.fromHex(pubkey).toRawBytes(false);
+  }
+
+  // compress pubkey
+  compressPubkey(pubkey: PubKey): PubKey {
+    return secp256k1.ProjectivePoint.fromHex(pubkey).toRawBytes(true);
+  }
 }

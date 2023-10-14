@@ -1,5 +1,6 @@
 import { secp256k1 as secp } from '@noble/curves/secp256k1';
 import test from 'ava';
+// import { hexToBytes } from 'viem';
 
 import Secp256k1 from '../lib/Secp256k1.js';
 import { areUint8ArraysEqual } from '../lib/utils.js';
@@ -182,4 +183,42 @@ test('deriveFromHDKeyForPubkey', (t) => {
     17, 118, 207, 169, 57, 69, 29, 232, 32, 74, 37, 98, 85, 57, 35, 36,
   ]);
   t.is(areUint8ArraysEqual(pubkey1, pubkey2), true);
+});
+
+test('uncompressPubkey', (t) => {
+  const secp256k1 = new Secp256k1();
+
+  const pubkey1 = new Uint8Array([
+    2, 132, 70, 215, 81, 0, 182, 70, 225, 201, 109, 114, 64, 13, 78, 237, 150,
+    17, 118, 207, 169, 57, 69, 29, 232, 32, 74, 37, 98, 85, 57, 35, 36,
+  ]);
+
+  // uncompress pubkey start with 04
+  const pubkey2 = new Uint8Array([
+    4, 132, 70, 215, 81, 0, 182, 70, 225, 201, 109, 114, 64, 13, 78, 237, 150,
+    17, 118, 207, 169, 57, 69, 29, 232, 32, 74, 37, 98, 85, 57, 35, 36, 142,
+    166, 99, 190, 190, 234, 111, 66, 58, 135, 82, 83, 163, 131, 192, 54, 211,
+    36, 245, 222, 224, 237, 45, 240, 51, 39, 151, 171, 215, 226, 93, 180,
+  ]);
+
+  t.is(areUint8ArraysEqual(secp256k1.uncompressPubkey(pubkey1), pubkey2), true);
+});
+
+test('compressPubkey', (t) => {
+  const secp256k1 = new Secp256k1();
+
+  // uncompress pubkey start with 04
+  const pubkey1 = new Uint8Array([
+    4, 132, 70, 215, 81, 0, 182, 70, 225, 201, 109, 114, 64, 13, 78, 237, 150,
+    17, 118, 207, 169, 57, 69, 29, 232, 32, 74, 37, 98, 85, 57, 35, 36, 142,
+    166, 99, 190, 190, 234, 111, 66, 58, 135, 82, 83, 163, 131, 192, 54, 211,
+    36, 245, 222, 224, 237, 45, 240, 51, 39, 151, 171, 215, 226, 93, 180,
+  ]);
+
+  const pubkey2 = new Uint8Array([
+    2, 132, 70, 215, 81, 0, 182, 70, 225, 201, 109, 114, 64, 13, 78, 237, 150,
+    17, 118, 207, 169, 57, 69, 29, 232, 32, 74, 37, 98, 85, 57, 35, 36,
+  ]);
+
+  t.is(areUint8ArraysEqual(secp256k1.compressPubkey(pubkey1), pubkey2), true);
 });
