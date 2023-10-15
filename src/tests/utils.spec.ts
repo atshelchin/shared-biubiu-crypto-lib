@@ -122,6 +122,18 @@ test('toBTCAddress-P2SH_P2WPKH', async (t) => {
   );
 });
 
+test('toBTCAddress-P2SH_P2WPKH-another-pubkey', async (t) => {
+  const pubkey = new Uint8Array([
+    2, 63, 179, 216, 245, 117, 19, 113, 233, 207, 58, 30, 146, 190, 20, 61, 221,
+    75, 11, 183, 31, 20, 177, 37, 21, 144, 42, 4, 226, 153, 185, 82, 145,
+  ]);
+
+  t.is(
+    await toBTCAddress(pubkey, 'P2SH-P2WPKH'),
+    '3CMGKR3hepw4CsrxEunQh351jYvwhRCUkX',
+  );
+});
+
 test('toBTCWIF', async (t) => {
   const privkey = new Uint8Array([
     2, 0, 120, 14, 111, 191, 217, 240, 218, 105, 87, 100, 166, 39, 247, 251, 26,
