@@ -32,6 +32,7 @@
     ],
     "functional/no-return-void": "off",
     "functional/no-classes": "off",
-    "functional/prefer-immutable-types":"off"
+    "functional/prefer-immutable-types":"off",
+    "functional/no-let":"off"
   }
 }

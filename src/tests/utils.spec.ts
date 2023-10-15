@@ -11,6 +11,7 @@ import {
   toSolanaAddress,
   toSolanaWIF,
   toSUIAddress,
+  toSUIWIF,
   toTronAddress,
   toTronWIF,
   tronBs58ToHex,
@@ -223,8 +224,40 @@ test('toSolanaWIF', async (t) => {
   );
 });
 
-test('toSUIAddress2', (t) => {
-  console.log(toSUIAddress());
+test('toSUIAddress', async (t) => {
+  const pubkey = new Uint8Array([
+    53, 14, 97, 41, 170, 86, 123, 15, 211, 132, 6, 216, 156, 40, 56, 251, 93,
+    204, 211, 230, 110, 221, 217, 27, 25, 170, 66, 60, 134, 157, 202, 102,
+  ]);
+  console.log(await toSUIAddress(pubkey));
 
-  t.is(1, 1);
+  t.is(
+    await toSUIAddress(pubkey),
+    '0xe95bc03686707062944fcd7511ced71ef7ca693079b9f427cf17dccc83c6b096',
+  );
+});
+
+test('toSUIAddress-another-pubkey', async (t) => {
+  const pubkey = new Uint8Array([
+    52, 200, 88, 71, 104, 163, 158, 226, 198, 228, 179, 205, 216, 242, 14, 45,
+    184, 17, 56, 92, 169, 192, 118, 213, 141, 203, 153, 252, 50, 146, 124, 107,
+  ]);
+  console.log(await toSUIAddress(pubkey));
+
+  t.is(
+    await toSUIAddress(pubkey),
+    '0x90b2dc7e5b36eeb3e754b12decb0de37d569ebe535df1bbb50aef15c63d7257a',
+  );
+});
+
+test('toSUIWIF', async (t) => {
+  const privkey = new Uint8Array([
+    138, 59, 150, 235, 43, 19, 81, 92, 192, 5, 214, 170, 33, 1, 79, 249, 115,
+    136, 237, 160, 124, 52, 223, 140, 71, 254, 44, 46, 56, 149, 20, 220,
+  ]);
+
+  t.is(
+    await toSUIWIF(privkey),
+    '0x8a3b96eb2b13515cc005d6aa21014ff97388eda07c34df8c47fe2c2e389514dc',
+  );
 });

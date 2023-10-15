@@ -43,7 +43,8 @@
     "bech",
     "WPKH",
     "BTCWIF",
-    "ETHWIF"
+    "ETHWIF",
+    "SUIWIF"
   ],
   "flagWords": [],
   "ignorePaths": [

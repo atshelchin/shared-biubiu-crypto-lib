@@ -1,6 +1,6 @@
 import { BitcoinAddress } from 'bech32-buffer';
 import bs58 from 'bs58';
-import { keccak, ripemd160, sha256, sha3 } from 'hash-wasm';
+import { blake2b, keccak, ripemd160, sha256, sha3 } from 'hash-wasm';
 import { bytesToHex, hexToBytes } from 'viem';
 import type { Hex } from 'viem';
 
@@ -66,6 +66,10 @@ export const toTronWIF = (privkey: PrivKey): string => {
 };
 
 export const toAptosWIF = (privkey: PrivKey): string => {
+  return bytesToHex(privkey.slice(0, 32));
+};
+
+export const toSUIWIF = (privkey: PrivKey): string => {
   return bytesToHex(privkey.slice(0, 32));
 };
 
@@ -161,7 +165,10 @@ export const toAptosAddress = async (pubkey: PubKey): Promise<string> => {
 export const toSolanaAddress = (pubkey: PubKey): string => {
   return bs58.encode(pubkey);
 };
-export const toSUIAddress = () => {};
+export const toSUIAddress = async (pubkey: PubKey): Promise<string> => {
+  const data = await blake2b(new Uint8Array([0, ...pubkey]), 256);
+  return normalizeSuiAddress(data.slice(0, SUI_ADDRESS_LENGTH * 2));
+};
 
 // sign in eth
 export const signMessageInETH = () => {};
@@ -197,3 +204,15 @@ export const areUint8ArraysEqual = (arr1: Uint8Array, arr2: Uint8Array) => {
 
   return arr1.every((value, index) => value === arr2[index]);
 };
+
+export const SUI_ADDRESS_LENGTH = 32;
+export function normalizeSuiAddress(
+  value: string,
+  forceAdd0x: boolean = false,
+): string {
+  let address = value.toLowerCase();
+  if (!forceAdd0x && address.startsWith('0x')) {
+    address = address.slice(2);
+  }
+  return `0x${address.padStart(SUI_ADDRESS_LENGTH * 2, '0')}`;
+}
