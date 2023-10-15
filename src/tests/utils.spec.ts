@@ -8,6 +8,8 @@ import {
   toBTCWIF,
   toETHAddress,
   toETHWIF,
+  toSolanaAddress,
+  toSolanaWIF,
   toSUIAddress,
   toTronAddress,
   toTronWIF,
@@ -194,6 +196,30 @@ test('toAptosAddress', async (t) => {
   t.is(
     await toAptosAddress(pubkey),
     '0xa547c5e4f85513bd6f35199e20cf0f9217816d56781d69a8d72aed79482a7713',
+  );
+});
+
+test('toSolanaAddress', async (t) => {
+  const pubkey = new Uint8Array([
+    233, 139, 15, 100, 3, 244, 105, 93, 115, 82, 87, 52, 196, 128, 110, 118, 61,
+    66, 9, 218, 50, 51, 124, 239, 16, 167, 211, 55, 227, 164, 232, 228,
+  ]);
+
+  t.is(
+    await toSolanaAddress(pubkey),
+    'GieynY44ruznz3JgRte2PsbA3oV24TLJGtAKMjbMXwRm',
+  );
+});
+
+test('toSolanaWIF', async (t) => {
+  const privkey = new Uint8Array([
+    37, 131, 108, 156, 68, 90, 169, 138, 22, 234, 77, 252, 188, 146, 41, 99, 76,
+    18, 56, 65, 195, 106, 124, 108, 50, 71, 170, 114, 253, 185, 204, 57,
+  ]);
+
+  t.is(
+    await toSolanaWIF(privkey),
+    'kW3SuswccnXVaxU9muMj9AFHSqg71qfpesyJqNKMNReAHiNwtuWnQPvJ8p6YoS9JiGnVDLWY75DukxBX3T1CgDy',
   );
 });
 

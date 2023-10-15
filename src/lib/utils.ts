@@ -4,6 +4,7 @@ import { keccak, ripemd160, sha256, sha3 } from 'hash-wasm';
 import { bytesToHex, hexToBytes } from 'viem';
 import type { Hex } from 'viem';
 
+import Ed25519 from './Ed25519.js';
 import type {
   BTCAddressType,
   ETHAddress,
@@ -66,6 +67,13 @@ export const toTronWIF = (privkey: PrivKey): string => {
 
 export const toAptosWIF = (privkey: PrivKey): string => {
   return bytesToHex(privkey.slice(0, 32));
+};
+
+export const toSolanaWIF = (privkey: PrivKey): string => {
+  const ed25519 = new Ed25519();
+  const keypair = ed25519.generateKeyPairFromPrivkey(privkey);
+
+  return bs58.encode(new Uint8Array([...keypair[0], ...keypair[1]]));
 };
 
 export const toBTCWIF = async (privkey: PrivKey): Promise<string> => {
@@ -150,7 +158,9 @@ export const toAptosAddress = async (pubkey: PubKey): Promise<string> => {
   const hash = await sha3(pubkey, 256);
   return `0x${hash}`;
 };
-export const toSolanaAddress = () => {};
+export const toSolanaAddress = (pubkey: PubKey): string => {
+  return bs58.encode(pubkey);
+};
 export const toSUIAddress = () => {};
 
 // sign in eth
