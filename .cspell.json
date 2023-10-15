@@ -38,7 +38,10 @@
     "Solana",
     "biubiu",
     "uncompress",
-    "keccak"
+    "keccak",
+    "ripemd",
+    "bech",
+    "WPKH"
   ],
   "flagWords": [],
   "ignorePaths": [
@@ -46,6 +49,7 @@
     "package-lock.json",
     "yarn.lock",
     "tsconfig.json",
-    "node_modules/**"
+    "node_modules/**",
+    "**/tests/**"
   ]
 }
