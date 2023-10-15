@@ -3,11 +3,14 @@ import test from 'ava';
 import {
   hexToTronBs58,
   toAptosAddress,
+  toAptosWIF,
   toBTCAddress,
   toBTCWIF,
   toETHAddress,
+  toETHWIF,
   toSUIAddress,
   toTronAddress,
+  toTronWIF,
   tronBs58ToHex,
 } from '../lib/utils.js';
 
@@ -145,9 +148,57 @@ test('toBTCWIF', async (t) => {
     'KwHbszP8MiLRCuq7D1yT7sDKxFnS4X2nzUDEWayBh3KzTSBgAChH',
   );
 });
+test('toETHWIF', async (t) => {
+  const privkey = new Uint8Array([
+    4, 147, 16, 65, 254, 46, 35, 232, 253, 155, 121, 241, 109, 48, 46, 161, 229,
+    180, 195, 94, 254, 227, 226, 2, 12, 187, 16, 252, 183, 200, 187, 115,
+  ]);
+
+  t.is(
+    await toETHWIF(privkey),
+    '0x04931041fe2e23e8fd9b79f16d302ea1e5b4c35efee3e2020cbb10fcb7c8bb73',
+  );
+});
+
+test('toTronWIF', async (t) => {
+  const privkey = new Uint8Array([
+    4, 147, 16, 65, 254, 46, 35, 232, 253, 155, 121, 241, 109, 48, 46, 161, 229,
+    180, 195, 94, 254, 227, 226, 2, 12, 187, 16, 252, 183, 200, 187, 115,
+  ]);
+
+  t.is(
+    await toTronWIF(privkey),
+    '04931041fe2e23e8fd9b79f16d302ea1e5b4c35efee3e2020cbb10fcb7c8bb73',
+  );
+});
+
+test('toAptosWIF', async (t) => {
+  const privkey = new Uint8Array([
+    138, 59, 150, 235, 43, 19, 81, 92, 192, 5, 214, 170, 33, 1, 79, 249, 115,
+    136, 237, 160, 124, 52, 223, 140, 71, 254, 44, 46, 56, 149, 20, 220,
+  ]);
+
+  t.is(
+    await toAptosWIF(privkey),
+    '0x8a3b96eb2b13515cc005d6aa21014ff97388eda07c34df8c47fe2c2e389514dc',
+  );
+});
+
+test('toAptosAddress', async (t) => {
+  const pubkey = new Uint8Array([
+    52, 200, 88, 71, 104, 163, 158, 226, 198, 228, 179, 205, 216, 242, 14, 45,
+    184, 17, 56, 92, 169, 192, 118, 213, 141, 203, 153, 252, 50, 146, 124, 107,
+    0,
+  ]);
+
+  t.is(
+    await toAptosAddress(pubkey),
+    '0xa547c5e4f85513bd6f35199e20cf0f9217816d56781d69a8d72aed79482a7713',
+  );
+});
 
 test('toSUIAddress2', (t) => {
   console.log(toSUIAddress());
-  console.log(toAptosAddress());
+
   t.is(1, 1);
 });

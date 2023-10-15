@@ -42,7 +42,8 @@
     "ripemd",
     "bech",
     "WPKH",
-    "BTCWIF"
+    "BTCWIF",
+    "ETHWIF"
   ],
   "flagWords": [],
   "ignorePaths": [

@@ -1,6 +1,6 @@
 import { BitcoinAddress } from 'bech32-buffer';
 import bs58 from 'bs58';
-import { keccak, ripemd160, sha256 } from 'hash-wasm';
+import { keccak, ripemd160, sha256, sha3 } from 'hash-wasm';
 import { bytesToHex, hexToBytes } from 'viem';
 import type { Hex } from 'viem';
 
@@ -54,6 +54,18 @@ export const tronBs58ToHex = (bs58Addr: TronAddress): ETHAddress => {
     0,
     42,
   ) as ETHAddress;
+};
+
+export const toETHWIF = (privkey: PrivKey): string => {
+  return bytesToHex(privkey);
+};
+
+export const toTronWIF = (privkey: PrivKey): string => {
+  return bytesToHex(privkey).replace('0x', '');
+};
+
+export const toAptosWIF = (privkey: PrivKey): string => {
+  return bytesToHex(privkey.slice(0, 32));
 };
 
 export const toBTCWIF = async (privkey: PrivKey): Promise<string> => {
@@ -134,7 +146,10 @@ export const P2SH = async (pubkey: PubKey) => {
   return bs58.encode(new Uint8Array([versionPrefix, ...hash0, ...checkSum]));
 };
 
-export const toAptosAddress = () => {};
+export const toAptosAddress = async (pubkey: PubKey): Promise<string> => {
+  const hash = await sha3(pubkey, 256);
+  return `0x${hash}`;
+};
 export const toSolanaAddress = () => {};
 export const toSUIAddress = () => {};
 
