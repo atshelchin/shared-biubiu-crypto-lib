@@ -41,7 +41,8 @@
     "keccak",
     "ripemd",
     "bech",
-    "WPKH"
+    "WPKH",
+    "BTCWIF"
   ],
   "flagWords": [],
   "ignorePaths": [

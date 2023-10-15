@@ -7,6 +7,7 @@ import type { Hex } from 'viem';
 import type {
   BTCAddressType,
   ETHAddress,
+  PrivKey,
   PubKey,
   TronAddress,
 } from './Interface';
@@ -55,6 +56,19 @@ export const tronBs58ToHex = (bs58Addr: TronAddress): ETHAddress => {
   ) as ETHAddress;
 };
 
+export const toBTCWIF = async (privkey: PrivKey): Promise<string> => {
+  if (privkey.length == 32) {
+    const data = new Uint8Array([128, ...privkey, 1]);
+    const hash0 = await sha256(data);
+    const hash1 = await sha256(hexToBytes(`0x${hash0}`));
+
+    const checkSum = hexToBytes(`0x${hash1}`).slice(0, 4);
+
+    return bs58.encode(new Uint8Array([...data, ...checkSum]));
+  }
+
+  throw new Error('Invalid privateKey length');
+};
 export const toBTCAddress = async (
   pubkey: PubKey,
   addressType: BTCAddressType,
@@ -117,10 +131,6 @@ export const P2SH = async (pubkey: PubKey) => {
   const hash1 = await sha256(new Uint8Array([versionPrefix, ...hash0]));
   const hash2 = await sha256(hexToBytes(`0x${hash1}`));
   const checkSum = hexToBytes(`0x${hash2}`).slice(0, 4);
-  console.log(
-    'P2SH addr',
-    bs58.encode(new Uint8Array([versionPrefix, ...hash0, ...checkSum])),
-  );
   return bs58.encode(new Uint8Array([versionPrefix, ...hash0, ...checkSum]));
 };
 

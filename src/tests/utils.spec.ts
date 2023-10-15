@@ -4,6 +4,7 @@ import {
   hexToTronBs58,
   toAptosAddress,
   toBTCAddress,
+  toBTCWIF,
   toETHAddress,
   toSUIAddress,
   toTronAddress,
@@ -118,6 +119,18 @@ test('toBTCAddress-P2SH_P2WPKH', async (t) => {
   t.is(
     await toBTCAddress(pubkey, 'P2SH-P2WPKH'),
     '38pVaiGCcX5ccWhyPjTsibCXx2MCb1TPDq',
+  );
+});
+
+test('toBTCWIF', async (t) => {
+  const privkey = new Uint8Array([
+    2, 0, 120, 14, 111, 191, 217, 240, 218, 105, 87, 100, 166, 39, 247, 251, 26,
+    195, 249, 125, 17, 132, 70, 130, 187, 205, 15, 184, 241, 250, 110, 74,
+  ]);
+
+  t.is(
+    await toBTCWIF(privkey),
+    'KwHbszP8MiLRCuq7D1yT7sDKxFnS4X2nzUDEWayBh3KzTSBgAChH',
   );
 });
 
