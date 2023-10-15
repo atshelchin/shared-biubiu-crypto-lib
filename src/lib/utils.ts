@@ -1,3 +1,4 @@
+import aesjs from 'aes-js';
 import { BitcoinAddress } from 'bech32-buffer';
 import bs58 from 'bs58';
 import { blake2b, keccak, ripemd160, sha256, sha3 } from 'hash-wasm';
@@ -170,32 +171,35 @@ export const toSUIAddress = async (pubkey: PubKey): Promise<string> => {
   return normalizeSuiAddress(data.slice(0, SUI_ADDRESS_LENGTH * 2));
 };
 
-// sign in eth
-export const signMessageInETH = () => {};
-export const signTypedDataInETH = () => {};
-export const signTxnInETH = () => {};
-
-// sign in tron
-export const signMessageInTron = () => {};
-export const signTypedDataInTron = () => {};
-
-export const signTxnInTron = () => {};
-
-// sign in btc
-export const signTxnInBTC = () => {};
-
-// sign in Aptos
-export const signTxnInAptos = () => {};
-
-// sign in Solana
-export const signTxnInSolana = () => {};
-
-// sign in SUI
-export const signTxnInSUI = () => {};
-
 // AES encrypt
-export const decrypt = () => {};
-export const encrypt = () => {};
+export const encrypt = async (
+  key: Uint8Array,
+  rawBytes: Uint8Array,
+): Promise<Uint8Array> => {
+  if (key.length >= 32) {
+    const encryptKey = key.slice(0, 32);
+    const aesCtr = new aesjs.ModeOfOperation.ctr(encryptKey);
+    const encryptedBytes = aesCtr.encrypt(rawBytes);
+
+    return encryptedBytes;
+  }
+
+  throw new Error('Invalid key');
+};
+export const decrypt = async (
+  key: Uint8Array,
+  encryptedBytes: Uint8Array,
+): Promise<Uint8Array> => {
+  if (key.length >= 32) {
+    const decryptKey = key.slice(0, 32);
+    const aesCtr = new aesjs.ModeOfOperation.ctr(decryptKey);
+    const rawBytes = aesCtr.decrypt(encryptedBytes);
+
+    return rawBytes;
+  }
+
+  throw new Error('Invalid key');
+};
 
 export const areUint8ArraysEqual = (arr1: Uint8Array, arr2: Uint8Array) => {
   if (arr1.length !== arr2.length) {

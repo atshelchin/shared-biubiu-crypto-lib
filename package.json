@@ -96,6 +96,7 @@
     "viem": "^1.14.0"
   },
   "dependencies": {
+    "aes-js": "^3.1.2",
     "bech32-buffer": "^0.2.1",
     "bs58": "^5.0.0",
     "elliptic": "^6.5.4"

@@ -44,7 +44,8 @@
     "WPKH",
     "BTCWIF",
     "ETHWIF",
-    "SUIWIF"
+    "SUIWIF",
+    "aesjs"
   ],
   "flagWords": [],
   "ignorePaths": [

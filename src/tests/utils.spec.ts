@@ -1,6 +1,9 @@
 import test from 'ava';
+import { bytesToString, stringToBytes } from 'viem';
 
 import {
+  decrypt,
+  encrypt,
   hexToTronBs58,
   toAptosAddress,
   toAptosWIF,
@@ -229,7 +232,6 @@ test('toSUIAddress', async (t) => {
     53, 14, 97, 41, 170, 86, 123, 15, 211, 132, 6, 216, 156, 40, 56, 251, 93,
     204, 211, 230, 110, 221, 217, 27, 25, 170, 66, 60, 134, 157, 202, 102,
   ]);
-  console.log(await toSUIAddress(pubkey));
 
   t.is(
     await toSUIAddress(pubkey),
@@ -242,7 +244,6 @@ test('toSUIAddress-another-pubkey', async (t) => {
     52, 200, 88, 71, 104, 163, 158, 226, 198, 228, 179, 205, 216, 242, 14, 45,
     184, 17, 56, 92, 169, 192, 118, 213, 141, 203, 153, 252, 50, 146, 124, 107,
   ]);
-  console.log(await toSUIAddress(pubkey));
 
   t.is(
     await toSUIAddress(pubkey),
@@ -260,4 +261,21 @@ test('toSUIWIF', async (t) => {
     await toSUIWIF(privkey),
     '0x8a3b96eb2b13515cc005d6aa21014ff97388eda07c34df8c47fe2c2e389514dc',
   );
+});
+
+test('encrypt-decrypt', async (t) => {
+  const key = new Uint8Array([
+    3, 253, 71, 39, 90, 227, 158, 75, 46, 142, 84, 140, 88, 6, 87, 97, 127, 77,
+    22, 13, 62, 64, 252, 132, 64, 5, 214, 209, 179, 1, 82, 189, 146,
+  ]);
+
+  const text = 'Text may be any length you wish, no padding is required.';
+  const rawBytes = stringToBytes(text);
+
+  const encryptedBytes = await encrypt(key, rawBytes);
+
+  const decryptedBytes = await decrypt(key, encryptedBytes);
+  const decyptedText = bytesToString(decryptedBytes);
+
+  t.is(text, decyptedText);
 });
